@@ -153,6 +153,8 @@ extern const unsigned int libmodbus_version_minor;
 extern const unsigned int libmodbus_version_micro;
 
 typedef struct _modbus modbus_t;
+typedef void (*holding_reg_cb)(uint16_t regs_num, uint16_t regs_value);
+typedef void (*coil_cb)(uint16_t coil_num, uint16_t coil_value);
 
 typedef struct _modbus_mapping_t {
     int nb_bits;
@@ -167,6 +169,8 @@ typedef struct _modbus_mapping_t {
     uint8_t *tab_input_bits;
     uint16_t *tab_input_registers;
     uint16_t *tab_registers;
+    holding_reg_cb set_holding_reg;
+    coil_cb set_coil;
 } modbus_mapping_t;
 
 typedef enum

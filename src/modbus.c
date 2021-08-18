@@ -807,6 +807,12 @@ int modbus_reply(modbus_t *ctx, const uint8_t *req,
 
             if (data == 0xFF00 || data == 0x0) {
                 mb_mapping->tab_bits[mapping_address] = data ? ON : OFF;
+
+            if (NULL != mb_mapping->set_coil)
+            {
+                mb_mapping->set_coil(address, data);
+            }
+
                 memcpy(rsp, req, req_length);
                 rsp_length = req_length;
             } else {
@@ -830,6 +836,11 @@ int modbus_reply(modbus_t *ctx, const uint8_t *req,
                 address);
         } else {
             int data = (req[offset + 3] << 8) + req[offset + 4];
+
+            if (NULL != mb_mapping->set_holding_reg)
+            {
+                mb_mapping->set_holding_reg(address, data);
+            }
 
             mb_mapping->tab_registers[mapping_address] = data;
             memcpy(rsp, req, req_length);
